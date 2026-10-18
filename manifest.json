@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "Multi-Source Manhwa Reader",
+  "version": "1.0.0",
+  "description": "Browse and read manhwa from multiple sources with automatic fallback",
+  "permissions": ["storage", "activeTab", "contextMenus"],
+  "host_permissions": [
+    "https://api.asurascans.com/*",
+    "https://cdn.asurascans.com/*",
+    "https://asurascans.com/*",
+    "https://mangaunion.com/*",
+    "https://api.mangaunion.com/*",
+    "https://cdn.budgethosting.online/*",
+    "https://mangago.me/*",
+    "https://cdn.mangago.me/*",
+    "https://api.vortexscans.org/*",
+    "https://storage.vortexscans.org/*",
+    "https://vortexscans.org/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://asurascans.com/comics/*",
+        "https://mangaunion.com/manga/*",
+        "https://mangago.me/read-manga/*",
+        "https://vortexscans.org/*"
+      ],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ],
+  "options_page": "settings.html",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

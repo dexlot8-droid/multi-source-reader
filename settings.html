@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Multi-Source Reader Settings</title>
+  <style>
+    body { background: #1a1a2e; color: #eee; font-family: sans-serif; padding: 20px; max-width: 500px; margin: 0 auto; }
+    h1 { color: #e94560; font-size: 20px; margin-bottom: 20px; }
+    h3 { color: #e94560; font-size: 14px; margin: 16px 0 8px; }
+    .source-item { padding: 10px 12px; background: #0f3460; border-radius: 6px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .source-item input[type="checkbox"] { width: 16px; height: 16px; }
+    .source-item label { flex: 1; cursor: pointer; font-size: 13px; }
+    .setting-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; font-size: 13px; cursor: pointer; }
+    .save-btn { margin-top: 16px; padding: 10px 24px; border: none; border-radius: 6px; background: #e94560; color: #fff; cursor: pointer; font-size: 14px; }
+    .save-btn:hover { background: #c73454; }
+  </style>
+</head>
+<body>
+  <h1>Multi-Source Reader Settings</h1>
+  <h3>Sources</h3>
+  <div class="source-item"><input type="checkbox" data-source="asura" checked><label>Asura Scans (Primary)</label></div>
+  <div class="source-item"><input type="checkbox" data-source="mangaunion" checked><label>MangaUnion (Fallback)</label></div>
+  <div class="source-item"><input type="checkbox" data-source="mangago" checked><label>Mangago (Fallback)</label></div>
+  <div class="source-item"><input type="checkbox" data-source="vortex" checked><label>Vortex Scans (Fallback)</label></div>
+  <h3>Reader</h3>
+  <div class="setting-row"><input type="checkbox" id="autoFallback" checked><label>Auto-fallback to next source on error</label></div>
+  <div class="setting-row"><input type="checkbox" id="saveProgress" checked><label>Save reading progress</label></div>
+  <div class="setting-row"><input type="checkbox" id="darkMode" checked><label>Dark mode reader</label></div>
+  <button id="saveBtn" class="save-btn">Save Settings</button>
+  <script>
+    const sources = ['asura', 'mangaunion', 'mangago', 'vortex'];
+    chrome.storage.local.get(['sourceSettings', 'readerSettings'], (result) => {
+      const settings = result.sourceSettings || {};
+      const reader = result.readerSettings || {};
+      sources.forEach(s => {
+        const cb = document.querySelector('input[data-source="' + s + '"]');
+        if (cb && settings[s]) cb.checked = settings[s].enabled !== false;
+      });
+      if (reader.autoFallback !== undefined) document.getElementById('autoFallback').checked = reader.autoFallback;
+      if (reader.saveProgress !== undefined) document.getElementById('saveProgress').checked = reader.saveProgress;
+      if (reader.darkMode !== undefined) document.getElementById('darkMode').checked = reader.darkMode;
+    });
+    document.getElementById('saveBtn').addEventListener('click', () => {
+      const settings = {};
+      sources.forEach(s => {
+        const cb = document.querySelector('input[data-source="' + s + '"]');
+        if (cb) settings[s] = { enabled: cb.checked };
+      });
+      chrome.storage.local.set({
+        sourceSettings: settings,
+        readerSettings: {
+          autoFallback: document.getElementById('autoFallback').checked,
+          saveProgress: document.getElementById('saveProgress').checked,
+          darkMode: document.getElementById('darkMode').checked
+        }
+      });
+      alert('Settings saved!');
+    });
+  </script>
+</body>
+</html>

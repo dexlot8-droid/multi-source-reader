@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Source Manhwa Reader</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="header">
+    <h1>Multi-Source Reader</h1>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search all sources...">
+      <button id="searchBtn">Search</button>
+    </div>
+    <div class="source-filter" id="sourceFilter">
+      <label><input type="checkbox" data-source="asura" checked> Asura</label>
+      <label><input type="checkbox" data-source="mangaunion" checked> MangaUnion</label>
+      <label><input type="checkbox" data-source="mangago" checked> Mangago</label>
+      <label><input type="checkbox" data-source="vortex" checked> Vortex</label>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="popular">Popular</button>
+    <button class="tab-btn" data-tab="search">Search</button>
+    <button class="tab-btn" data-tab="history">History</button>
+    <button class="tab-btn" data-tab="settings">Settings</button>
+  </div>
+  <div id="popular" class="tab-content active">
+    <div id="seriesList" class="series-list"><p class="loading">Loading...</p></div>
+  </div>
+  <div id="search" class="tab-content">
+    <div id="searchResults" class="series-list"><p class="empty">Search across all sources</p></div>
+  </div>
+  <div id="history" class="tab-content">
+    <div id="historyList" class="series-list"><p class="empty">No reading history</p></div>
+  </div>
+  <div id="settings" class="tab-content">
+    <div class="settings-panel">
+      <h3>Source Priority</h3>
+      <p class="settings-desc">Drag to reorder. Top source is tried first.</p>
+      <div id="sourcePriority" class="priority-list">
+        <div class="priority-item" data-source="asura"><span class="drag-handle">⠿</span> Asura Scans <span class="source-tag primary">Primary</span></div>
+        <div class="priority-item" data-source="mangaunion"><span class="drag-handle">⠿</span> MangaUnion <span class="source-tag fallback">Fallback</span></div>
+        <div class="priority-item" data-source="mangago"><span class="drag-handle">⠿</span> Mangago <span class="source-tag fallback">Fallback</span></div>
+        <div class="priority-item" data-source="vortex"><span class="drag-handle">⠿</span> Vortex Scans <span class="source-tag fallback">Fallback</span></div>
+      </div>
+      <h3>Reader Settings</h3>
+      <label class="setting-row"><input type="checkbox" id="autoFallback" checked> Auto-fallback to next source on error</label>
+      <label class="setting-row"><input type="checkbox" id="saveProgress" checked> Save reading progress</label>
+      <label class="setting-row"><input type="checkbox" id="darkMode" checked> Dark mode reader</label>
+      <button id="saveSettings" class="save-btn">Save Settings</button>
+    </div>
+  </div>
+  <div id="seriesDetail" class="series-detail hidden">
+    <button id="backBtn" class="back-btn">&larr; Back</button>
+    <div class="series-header">
+      <img id="seriesCover" src="" alt="Cover">
+      <div class="series-info">
+        <h2 id="seriesTitle"></h2>
+        <p id="seriesDesc"></p>
+        <div id="sourceBadges" class="source-badges"></div>
+      </div>
+    </div>
+    <h3>Chapters</h3>
+    <div id="chapterList" class="chapter-list"><p class="loading">Loading chapters...</p></div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
